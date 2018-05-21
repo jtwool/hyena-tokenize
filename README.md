@@ -18,9 +18,9 @@ The workhorse function is `tokenize`.
 
 The script can also be run on a file. It expects one sentence/document per line.
 ```Bash
-$: echo "Are ninjas scary??" > myfile.txt
-$: lein run myfile.txt
-are ninjas scary ??
+echo "Are ninjas scary??" > myfile.txt
+lein run myfile.txt
+#are ninjas scary ??
 ```
 ## Documentation
 
