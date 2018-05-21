@@ -24,9 +24,10 @@ lein run myfile.txt
 ```
 
 Currently, the tokenizer handles lowercasing, number normalization, end punctuation, and URLs.
+
 ## Documentation
 
-Tests are included in `src/hyena-tokenize/core.clj`.
+Tests are included in `test/hyena_tokenize/core_tests.clj`.
 
 ## License
 
