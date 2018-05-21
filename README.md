@@ -22,6 +22,8 @@ echo "Are ninjas scary??" > myfile.txt
 lein run myfile.txt
 # are ninjas scary ??
 ```
+
+Currently, the tokenizer handles lowercasing, number normalization, end punctuation, and URLs.
 ## Documentation
 
 Tests are included in `src/hyena-tokenize/core.clj`.
