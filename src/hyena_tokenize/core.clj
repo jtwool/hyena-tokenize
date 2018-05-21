@@ -57,4 +57,4 @@
   [& args]
   (with-open 
     [rdr (io/reader (first args))]
-    (doseq [x (line-seq rdr)] (println (tokenize x)))))
+    (doseq [x (line-seq rdr)] (println (str/join " " (tokenize x))))))

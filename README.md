@@ -11,12 +11,20 @@ The namespace is `hyena-tokenize.core`.
 The workhorse function is `tokenize`.
 
 ```Clojure
-    (require '[hyena-tokenize.core :as hyena])
-    (hyena/tokenize "Ninjas are scary!!")
-    ;; ["ninjas" "are" "scary" "!!"]
+(require '[hyena-tokenize.core :as hyena])
+(hyena/tokenize "Ninjas are scary!!")
+;; ["ninjas" "are" "scary" "!!"]
 ```
 
-Unit tests are included in `src/hyena-tokenize/core.clj`.
+The script can also be run on a file. It expects one sentence/document per line.
+```
+$: echo "Are ninjas scary??" > myfile.txt
+$: lein run myfile.txt
+are ninjas scary ??
+```
+## Documentation
+
+Tests are included in `src/hyena-tokenize/core.clj`.
 
 ## License
 
