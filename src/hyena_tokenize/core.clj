@@ -4,25 +4,31 @@
            [clojure.java.io :as io])
   (:gen-class))
 
-  (defn tokenize
-    "Tokenize a sentence to words."
-    [s]
-    (str/split
-      (str/replace
-      (str/replace
-      (str/replace
-      (str/replace
-      (str/replace  
-      (str/replace 
-       (str/lower-case s)
-      #"(\w+)(n't)\b" "$1 nt")
-      #"\d" "0")
-      #"[0,]+000" "0000")
-      #"0*\.0+" "0.0")
-      #"(https?://)?(www\.)?(\w+?\.)+\w{2,3}(/\S+)?" "URL")
-      #"([\w\d]+)([?;:!.,]+)(\s|$)" " $1 $2 ") 
-     #"\s+")
-  )
+(defn replace-many
+  "Perform many replaces at once"
+  [s rs]
+  (reduce 
+    (fn [s r]
+      (str/replace s (r :match) (r :replace)))
+    s rs))
+
+(defn tokenize
+  "Tokenize a sentence to words."
+  [s]
+  (str/split
+    (replace-many
+     (str/lower-case s)
+    [{:match #"(\w+)(n't)\b" :replace "$1 nt"}
+     {:match #"\d" :replace "0"}
+     {:match #"[0,]+000" :replace "0000"}
+     {:match #"0*\.0+" :replace "0.0"}
+     {:match #"(https?://)?(www\.)?(\w+?\.)+\w{2,3}(/\S+)?" 
+      :replace"URL"}
+     {:match #"[\(\[](.*?)[\]\)]"  :replace " (PH) $1"}
+     {:match #"[\"'](.*?)[\"']"  :replace " QUOTE $1"}
+     {:match #"([\w\d]+)([?;:!.,]+)(\s|$)" :replace " $1 $2 "}])
+   #"\s+")
+)
 
 (deftest tokenize-test
 
@@ -46,6 +52,17 @@
            (tokenize "http://go.espn.com/nba https://go.espn.com/nba/celtics"))))
   (testing "End punctuation"
     (is (= ["i" "love" "dogs" "!!"]  (tokenize "I love dogs!!"))))
+
+  (testing "Parentheticals and quotes"
+    (is (= ["cookies" "(PH)" "which" "i" "love"]
+           (tokenize "cookies (which I love)")))
+    (is (= ["this" "passage" "is" "unedited" "(PH)" "sic"]
+           (tokenize "This passage is unedited [sic]")))
+    (is (= ["john" "said" "QUOTE" "i" "love" "mary"]
+           (tokenize "John said 'I love Mary'")))
+    (is (= ["john" "said" "QUOTE" "i" "love" "mary"]
+           (tokenize "John said \"I love Mary\"")))
+  )
   (testing "Sentences"
     (is (= ["this" "is" "several" "sentences" "." "i" "hope" "my" "tokenizer"
             "can" "handle" "0" "sentences" "at" "once" "!!" "can" "yours" "??"]
@@ -55,6 +72,9 @@
 (defn -main
   "Tokenize a file line by line."
   [& args]
-  (with-open 
-    [rdr (io/reader (first args))]
-    (doseq [x (line-seq rdr)] (println (str/join " " (tokenize x))))))
+  (let [fp (first args)]
+    (if (= fp "tests")
+      (println (run-tests 'hyena-tokenize.core))
+    (with-open 
+      [rdr (io/reader fp)]
+      (doseq [x (line-seq rdr)] (println (str/join " " (tokenize x))))))))
