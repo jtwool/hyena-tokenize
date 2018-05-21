@@ -1,6 +1,6 @@
 Hyena Tokenize
 =============
-A word tokenizer built in Clojure.
+A word tokenizer built in Clojure, designed with document classification in mind.
 
 **jwolohan@indiana.edu**
 
