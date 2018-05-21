@@ -23,6 +23,8 @@
            (tokenize "http://go.espn.com/nba https://go.espn.com/nba/celtics"))))
   (testing "End punctuation"
     (is (= ["i" "love" "dogs" "!!"]  (tokenize "I love dogs!!"))))
+  (testing "Dates"
+    (is (= ["/DATE/" "/DATE/"]  (tokenize "01/01/2000 2000/01/01"))))
 
   (testing "Parentheticals and quotes"
     (is (= ["cookies" "(PH)" "which" "i" "love"]

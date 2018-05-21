@@ -27,6 +27,8 @@
      {:match #"[\"'](.*?)[\"']"  :replace " QUOTE $1"} ;;quote
      {:match #"([\w\d]+)([?;:!.,]+)(\s|$)"
       :replace " $1 $2 "} ;;end puncts
+     {:match #"(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})|(\d{2,4}[/-]\d{1,2}[/-]\d{1,2})"
+      :replace "/DATE/" } ;;dates
      ]) #"\s+"))
 
 (defn -main
