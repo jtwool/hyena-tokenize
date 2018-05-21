@@ -17,18 +17,17 @@
   (str/split
     (replace-many
      (str/lower-case s)
-    [{:match #"(\w+)(n't)\b" :replace "$1 nt"}
-     {:match #"\d" :replace "0"}
-     {:match #"[0,]+000" :replace "0000"}
-     {:match #"0*\.0+" :replace "0.0"}
-     {:match #"(https?://)?(www\.)?(\w+?\.)+\w{2,3}(/\S+)?" 
-      :replace"URL"}
-     {:match #"[\(\[](.*?)[\]\)]"  :replace " (PH) $1"}
-     {:match #"[\"'](.*?)[\"']"  :replace " QUOTE $1"}
-     {:match #"([\w\d]+)([?;:!.,]+)(\s|$)" :replace " $1 $2 "}])
-   #"\s+")
-)
-
+    [{:match #"(\w+)(n't)\b" :replace "$1 nt"} ;;don't
+     {:match #"\d" :replace "0"} ;;numbers
+     {:match #"[0,]+000" :replace "0000"} ;;big numbers
+     {:match #"0*\.0+" :replace "0.0"} ;;decimals
+     {:match #"(https?://)?(www\.)?(\w+?\.)+\w{2,3}(/\S+)?"
+      :replace"URL"} ;;urls
+     {:match #"[\(\[](.*?)[\]\)]"  :replace " (PH) $1"} ;;parens
+     {:match #"[\"'](.*?)[\"']"  :replace " QUOTE $1"} ;;quote
+     {:match #"([\w\d]+)([?;:!.,]+)(\s|$)"
+      :replace " $1 $2 "} ;;end puncts
+     ]) #"\s+"))
 
 (defn -main
   "Tokenize a file line by line."
